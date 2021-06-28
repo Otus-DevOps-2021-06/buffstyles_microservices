@@ -1,0 +1,19 @@
+Vagrant.configure("2") do |config|
+
+    config.vm.provider :vmware_desktop do |v|
+      v.memory = 1024
+      v.cpus = 1
+    end
+
+    config.vm.define "reddit" do |db|
+      db.vm.box = "hashicorp/bionic64"
+      db.vm.hostname = "reddit"
+      db.vm.network :private_network, ip: "10.10.10.10"
+
+      db.vm.provision "ansible" do |ansible|
+        ansible.playbook = "playbooks/otus-reddit.yml"
+      end
+
+    end
+
+  end

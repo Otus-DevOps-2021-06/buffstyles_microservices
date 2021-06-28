@@ -1,0 +1,7 @@
+---
+- name: Install Docker && Run otus-reddit container
+  hosts: all
+  become: yes
+
+  roles:
+    - docker
