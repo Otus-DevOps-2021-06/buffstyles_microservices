@@ -1,0 +1,21 @@
+FROM alpine:3.14.0
+
+ENV APP_HOME /app
+
+WORKDIR $APP_HOME
+COPY . $APP_HOME
+
+RUN apk add --update --no-cache ruby ruby-rdoc ruby-bundler ruby-bigdecimal build-base ruby-dev\
+    && gem install mongo bundler:1.17.2 \
+    && bundle install \
+    && gem uninstall bundler:1.17.2 \
+    && gem cleanup \
+    && apk del build-base ruby-dev\
+    && rm -rf $APP_HOME/Gemfile* \
+              /usr/lib/ruby/gems/*/cache/*
+
+
+ENV COMMENT_DATABASE_HOST comment_db
+ENV COMMENT_DATABASE comments
+
+CMD ["puma"]
