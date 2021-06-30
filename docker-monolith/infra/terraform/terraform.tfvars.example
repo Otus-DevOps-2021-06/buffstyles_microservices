@@ -1,0 +1,8 @@
+cloud_id                 = "some id"
+folder_id                = "some id"
+image_id                 = "some id"
+public_key_path          = "path/to/public/key"
+subnet_id                = "sodme id"
+service_account_key_file = "path/to/key/file"
+number                   = 2
+app_name                 = "reddit-app"
