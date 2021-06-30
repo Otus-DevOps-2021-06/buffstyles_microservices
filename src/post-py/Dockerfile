@@ -1,7 +1,7 @@
 FROM python:3.6.0-alpine
 
 WORKDIR /app
-ADD . /app
+COPY requirements.txt /app
 
 RUN apk --no-cache --update add build-base && \
     pip install -r /app/requirements.txt && \
@@ -9,5 +9,7 @@ RUN apk --no-cache --update add build-base && \
 
 ENV POST_DATABASE_HOST post_db
 ENV POST_DATABASE posts
+
+COPY . /app
 
 ENTRYPOINT ["python3", "post_app.py"]
