@@ -1,0 +1,16 @@
+---
+  - name: run register command
+    community.docker.docker_container_exec:
+      container: "{{ runner_name }}-{{ item }}"
+      command: |
+          gitlab-runner register
+          --non-interactive
+          --url 'http://{{ ansible_host }}/'
+          --locked=false
+          --name 'DockerRunner-{{ count }}'
+          --executor docker
+          --docker-image alpine:latest
+          --registration-token '{{ registration_token }}'
+          --tag-list "linux,xenial,ubuntu,docker"
+          --run-untagged
+    with_sequence: count='{{ count }}'

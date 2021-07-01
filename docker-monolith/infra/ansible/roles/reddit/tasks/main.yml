@@ -5,7 +5,7 @@
       source: pull
     tags: deploy
 
-  - name: Fetch and run otus-reddit container
+  - name: Run otus-reddit container
     docker_container:
       name: reddit
       image: buffstyles/otus-reddit:1.0
