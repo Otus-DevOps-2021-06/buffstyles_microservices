@@ -1,0 +1,7 @@
+{
+    "folder_id": "b1gpqvsj7tsoa3u5ak9m",
+    "source_image_family": "ubuntu-1804-lts",
+    "service_account_key_file": "/Users/pdd/Desktop/Repos/temp/packer_micro/key.json",
+    "subnet_id": "e9blcrls9msuq3nnvfrq",
+    "zone": "ru-central1-a"
+}

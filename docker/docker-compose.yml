@@ -1,0 +1,94 @@
+version: '3.3'
+services:
+
+  post_db:
+    image: mongo:${MONGO_VER}
+    volumes:
+      - post_db:/data/db
+    networks:
+      back_net:
+        aliases:
+          - post_db
+          - comment_db
+
+  ui:
+    #build: ./ui
+    image: ${USER_NAME}/ui:${UI_VER}
+    ports:
+      - ${UI_HOST_PORT}:${UI_CONTAINER_PORT}/tcp
+    networks:
+      - front_net
+
+  post:
+    #build: ./post-py
+    image: ${USER_NAME}/post:${POST_VER}
+    networks:
+      - front_net
+      - back_net
+
+  comment:
+    #build: ./comment
+    image: ${USER_NAME}/comment:${COMMENT_VER}
+    networks:
+      - front_net
+      - back_net
+
+  prometheus:
+    image: ${USER_NAME}/prometheus
+    ports:
+      - '9090:9090'
+    volumes:
+      - prometheus_data:/prometheus
+    networks:
+      - front_net
+      - back_net
+
+  node-exporter:
+    image: prom/node-exporter:${NODE_EXPORTER_VER}
+    user: root
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+    networks:
+      - back_net
+
+  mongodb-exporter:
+    image: ${USER_NAME}/mongodb-exporter
+    networks:
+      - back_net
+
+  blackbox-exporter:
+    image: ${USER_NAME}/blackbox-exporter
+    networks:
+      - front_net
+
+
+volumes:
+
+  post_db:
+  prometheus_data:
+
+networks:
+
+  front_net:
+   # name: front_net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.1.0/24
+         # gateway: 10.0.1.1
+
+  back_net:
+   # name: back_net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.2.0/24
+         # gateway: 10.0.2.1
