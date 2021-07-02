@@ -17,3 +17,4 @@ venv
 #Docker etc.
 
 /docker-monolith/infra/packer/variables.json
+.env

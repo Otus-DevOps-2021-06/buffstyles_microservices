@@ -100,3 +100,32 @@ docker run -d --network=reddit --env POST_SERVICE_HOST=postamp --env COMMENT_SER
 ### Дополнительное задание 4:
 
  - Ссылка на Slack чат с оповещениями GitLab - https://devops-team-otus.slack.com/archives/C0258C9RS1Z
+
+
+## Домашнее задание №20 - monitoring-1.
+
+### Основное задание:
+
+ - Создан Docker образ `buffstyles/prometheus` с конфигурацией для мониторинга наших микросервисов.
+ - Собраны образы приложений скриптом `docker_build.sh` для каждого сервиса.
+ - Обновлен `docker-compose.yml`, добавлен сервис мониторинга.
+ - Поиграно с healthcheck и графиками.
+ - Обновлен `docker-compose.yml`, добавлен node exporter для экспорта метрик докер хоста.
+ - Добавлен таргет в конфигурацию мониторинга, пересобран образ `buffstyles/prometheus`.
+ - Созданные образы запушены на DockerHub - https://hub.docker.com/u/buffstyles.
+
+### Дополнительное задание 1:
+
+ - В Prometheus добавлен мониторинг MongoDB с использованием `buffstyles/mongodb-exporter`. Файлы сборки - `monitoring/mongodb-exporter`
+ - Пересобран образ `buffstyles/prometheus`.
+ - Обновлен `docker-compose.yml`.
+
+### Дополнительное задание 2:
+
+ - В Prometheus добавлен probe-мониторинг сервисов comment, post, ui с использованием `buffstyles/blackbox-exporter`. Файлы сборки - `monitoring/blackbox-exporter`
+ - Пересобран образ `buffstyles/prometheus`.
+ - Обновлен `docker-compose.yml`.
+
+### Дополнительное задание 3:
+
+ - Создан `Makefile` для сборки и пуша на DockerHub образов `post`, `comment`, `ui`, `mongodb-exporter`, `blackbox-exporter`, `prometheus`.
