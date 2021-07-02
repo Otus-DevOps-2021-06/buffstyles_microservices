@@ -18,21 +18,22 @@ resource "yandex_compute_instance" "app" {
   allow_stopping_for_update = true
   name  = "${var.app_name}-${count.index + 1}"
   count = var.number
+  platform_id = "standard-v2"
 
   labels = {
-    tags = "reddit-app"
+    tags = "gitlab-ci-vm"
   }
 
   resources {
     cores         = 2
-    memory        = 2
-    core_fraction = 5
+    memory        = 4
+    core_fraction = 50
   }
 
   boot_disk {
     initialize_params {
       image_id = var.image_id
-      size = 10
+      size = 50
     }
   }
 

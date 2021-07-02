@@ -12,7 +12,7 @@ from yandex.cloud.compute.v1.instance_service_pb2 import ListInstancesRequest
 def main():
 
     ####### Поменяй на свое #######
-    inventory_groups = ["app", "db"]
+    inventory_groups = ["app", "db","ci","test"]
     sa_json_path = '../../../../temp/terraform_micro/key.json'
     folder_id = 'b1gpqvsj7tsoa3u5ak9m'
     ##################################

@@ -1,0 +1,9 @@
+---
+  # Container prefix
+  runner_name: "gitlab-runner"
+
+  # Paste your token here:
+  registration_token: "Yd2Ew1sGV1aRMt3xVzXF"
+
+  # Runners count
+  count: 1
