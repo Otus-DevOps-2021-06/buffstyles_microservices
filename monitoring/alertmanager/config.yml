@@ -1,0 +1,33 @@
+global:
+  slack_api_url: 'https://hooks.slack.com/services/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'
+
+route:
+  receiver: 'slack-notifications'
+  routes:
+  - receiver: 'slack-notifications'
+    continue: true
+  # - receiver: 'autoheal'
+  #   continue: true
+  - receiver: 'email'
+
+receivers:
+- name: 'slack-notifications'
+  slack_configs:
+  - channel: '#danil_povarnitsyn'
+    text: "summary: {{ .CommonAnnotations.summary }}\ndescription: {{ .CommonAnnotations.description }}"
+    send_resolved: true
+
+- name: 'email'
+  email_configs:
+  - to: 'YOUR_GMAIL_ACCOUNT'
+    from: 'ALERTMANAGER_GMAIL_ACCOUNT'
+    smarthost: smtp.gmail.com:587
+    auth_username: 'ALERTMANAGER_GMAIL_ACCOUNT'
+    auth_identity: 'ALERTMANAGER_GMAIL_ACCOUNT'
+    auth_password: 'ALERTMANAGER_GMAIL_AUTH_TOKEN'
+
+# - name: 'autoheal'
+#   webhook_configs:
+#   - url: https://autoheal.openshift-autoheal.svc/alerts
+#   #  http_config:
+#   #    bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token

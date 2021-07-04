@@ -1,0 +1,109 @@
+version: '3.3'
+services:
+
+  prometheus:
+    image: ${USER_NAME}/prometheus
+    volumes:
+      - prometheus_data:/prometheus
+    networks:
+      - front_net
+      - back_net
+
+  node-exporter:
+    image: prom/node-exporter:${NODE_EXPORTER_VER}
+    user: root
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+    networks:
+      - back_net
+
+  mongodb-exporter:
+    image: ${USER_NAME}/mongodb-exporter
+    networks:
+      - back_net
+
+  blackbox-exporter:
+    image: ${USER_NAME}/blackbox-exporter
+    networks:
+      - front_net
+
+  cadvisor:
+    image: ${USER_NAME}/cadvisor
+    volumes:
+      - '/:/rootfs:ro'
+      - '/var/run:/var/run:rw'
+      - '/sys:/sys:ro'
+      - '/var/lib/docker/:/var/lib/docker:ro'
+    ports:
+      - '8080:8080'
+    networks:
+      - back_net
+
+  grafana:
+    image: ${USER_NAME}/grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+      - trickster
+    ports:
+      - 3000:3000
+    networks:
+      - front_net
+
+  alertmanager:
+    image: ${USER_NAME}/alertmanager
+    ports:
+      - 9093:9093
+    networks:
+      - back_net
+
+  telegraf:
+    image: ${USER_NAME}/telegraf
+    volumes:
+      - /:/hostfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9273:9273
+    networks:
+      - back_net
+
+  trickster:
+    image: ${USER_NAME}/trickster
+    ports:
+      - 8480:8480
+    depends_on:
+      - prometheus
+    networks:
+      - front_net
+
+volumes:
+
+  prometheus_data:
+  grafana_data:
+
+networks:
+
+  front_net:
+# name: front_net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.1.0/24
+        # gateway: 10.0.1.1
+
+  back_net:
+# name: back_net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.2.0/24
+        # gateway: 10.0.2.1

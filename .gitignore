@@ -18,3 +18,4 @@ venv
 
 /docker-monolith/infra/packer/variables.json
 .env
+api.key
