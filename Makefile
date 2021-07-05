@@ -1,7 +1,8 @@
 
 BUILD_FILE=docker_build.sh
 
-all: build push
+all: build push build-log
+
 
 build:	build_comment build_post build_ui build_prometheus \
 		build_mongodb_exporter build_blackbox_exporter build_grafana \

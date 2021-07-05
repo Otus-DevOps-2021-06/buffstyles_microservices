@@ -15,39 +15,14 @@ POST_SERVICE_HOST ||= ENV['POST_SERVICE_HOST'] || '127.0.0.1'
 POST_SERVICE_PORT ||= ENV['POST_SERVICE_PORT'] || '4567'
 COMMENT_SERVICE_HOST ||= ENV['COMMENT_SERVICE_HOST'] || '127.0.0.1'
 COMMENT_SERVICE_PORT ||= ENV['COMMENT_SERVICE_PORT'] || '4567'
-ZIPKIN_ENABLED ||= ENV['ZIPKIN_ENABLED'] || false
 POST_URL ||= "http://#{POST_SERVICE_HOST}:#{POST_SERVICE_PORT}"
 COMMENT_URL ||= "http://#{COMMENT_SERVICE_HOST}:#{COMMENT_SERVICE_PORT}"
 
 # App version and build info
-if File.exist?('VERSION')
-  VERSION ||= File.read('VERSION').strip
-else
-  VERSION ||= "version_missing"
-end
-
-if File.exist?('build_info.txt')
-  BUILD_INFO = File.readlines('build_info.txt')
-else
-  BUILD_INFO = Array.new(2, "build_info_missing")
-end
-
-@@host_info=ENV['HOSTNAME']
-@@env_info=ENV['ENV']
-
-# Zipkin opts
-set :zipkin_enabled, ZIPKIN_ENABLED
-zipkin_config = {
-    service_name: 'ui_app',
-    service_port: 9292,
-    sample_rate: 1,
-    sampled_as_boolean: false,
-    log_tracing: true,
-    json_api_host: 'http://zipkin:9411/api/v1/spans'
-  }
+VERSION ||= File.read('VERSION').strip
+BUILD_INFO = File.readlines('build_info.txt')
 
 configure do
-  # https://github.com/openzipkin/zipkin-ruby#sending-traces-on-incoming-requests
   http_client = Faraday.new do |faraday|
     faraday.use ZipkinTracer::FaradayHandler
     faraday.request :url_encoded # form-encode POST params
@@ -62,19 +37,11 @@ configure do
   enable :sessions
 end
 
-if settings.zipkin_enabled?
-  use ZipkinTracer::RackHandler, zipkin_config
-end
-
 # create and register metrics
 prometheus = Prometheus::Client.registry
 ui_health_gauge = Prometheus::Client::Gauge.new(
   :ui_health,
   'Health status of UI service'
-)
-ui_session_gauge = Prometheus::Client::Gauge.new(
-  :ui_unique_session_count,
-  'Count unique active sessions by User-Agent'
 )
 ui_health_post_gauge = Prometheus::Client::Gauge.new(
   :ui_health_post_availability,
@@ -85,33 +52,22 @@ ui_health_comment_gauge = Prometheus::Client::Gauge.new(
   'Check if Comment service is available to UI'
 )
 prometheus.register(ui_health_gauge)
-prometheus.register(ui_session_gauge)
 prometheus.register(ui_health_post_gauge)
 prometheus.register(ui_health_comment_gauge)
 
 # Schedule health check function
 scheduler = Rufus::Scheduler.new
-scheduler.every '5s' do
+scheduler.every '5m' do
   check = JSON.parse(http_healthcheck_handler(POST_URL, COMMENT_URL, VERSION))
   set_health_gauge(ui_health_gauge, check['status'])
   set_health_gauge(ui_health_post_gauge, check['dependent_services']['post'])
   set_health_gauge(ui_health_comment_gauge, check['dependent_services']['comment'])
 end
 
-all_sessions_id = []
-uniq_session_count = 0
-
 # before each request
 before do
   session[:flashes] = [] if session[:flashes].class != Array
   env['rack.logger'] = settings.mylogger # set custom logger
-  @tracking = session[:tracking]
-  @session = @tracking['HTTP_USER_AGENT']
-  if all_sessions_id.index(@session) == nil
-    all_sessions_id.push(@session)
-    uniq_session_count += 1
-  end
-  set_health_gauge(ui_session_gauge, uniq_session_count)
 end
 
 # after each request

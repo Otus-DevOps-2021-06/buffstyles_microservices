@@ -11,5 +11,6 @@ ENV POST_DATABASE_HOST post_db
 ENV POST_DATABASE posts
 
 COPY . /app
+EXPOSE  5000
 
 ENTRYPOINT ["python3", "post_app.py"]
