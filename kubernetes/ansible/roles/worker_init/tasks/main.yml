@@ -1,0 +1,16 @@
+---
+  - name: Copy the join command to server location
+    copy:
+      src: join-command.txt
+      dest: /tmp/join-command.sh
+      mode: 0700
+
+  - name: Join the node to cluster
+    command: "{{ item }}"
+    with_items:
+      - sh /tmp/join-command.sh
+      - rm -f /tmp/join-command.sh
+
+  - name: Remove join command file on local machine
+    become: false
+    local_action: file path="./join-command.txt" state="absent"

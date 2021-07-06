@@ -1,0 +1,31 @@
+---
+- name: Update host, install Docker and k8s packages
+  hosts: all
+  become: true
+  gather_facts: False
+
+  roles:
+    - host_init
+
+- name: Setup master node
+  hosts: master
+  become: true
+  gather_facts: False
+
+  roles:
+    - master_init
+
+- name: Setup worker node
+  hosts: worker
+  become: true
+  gather_facts: False
+
+  roles:
+    - worker_init
+
+- name: Setup Calico
+  hosts: master
+  gather_facts: False
+
+  roles:
+    - calico_init
