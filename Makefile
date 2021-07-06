@@ -1,11 +1,13 @@
 
 BUILD_FILE=docker_build.sh
 
-all: build push
+all: build push build-log
+
 
 build:	build_comment build_post build_ui build_prometheus \
 		build_mongodb_exporter build_blackbox_exporter build_grafana \
-		build_alertmanager build_cadvisor build_telegraf build_trickster
+		build_alertmanager build_cadvisor build_telegraf build_trickster \
+		build_fluentd
 
 build_comment:
 	cd src/comment && bash $(BUILD_FILE)
@@ -40,12 +42,15 @@ build_telegraf:
 build_trickster:
 	cd monitoring/trickster && bash $(BUILD_FILE)
 
+build_fluentd:
+	cd monitoring/fluentd && bash $(BUILD_FILE)
+
 
 
 push: push_comment push_post push_ui push_prometheus \
 		push_mongodb_exporter push_blackbox_exporter \
 		push_grafana push_alertmanager push_cadvisor \
-		push_telegraf push_trickster
+		push_telegraf push_trickster push_fluentd
 
 push_comment:
 	docker push ${USER_NAME}/comment
@@ -79,3 +84,6 @@ push_telegraf:
 
 push_trickster:
 	docker push ${USER_NAME}/trickster
+
+push_fluentd:
+	docker push ${USER_NAME}/fluentd
