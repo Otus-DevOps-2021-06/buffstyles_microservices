@@ -129,3 +129,34 @@ docker run -d --network=reddit --env POST_SERVICE_HOST=postamp --env COMMENT_SER
 ### Дополнительное задание 3:
 
  - Создан `Makefile` для сборки и пуша на DockerHub образов `post`, `comment`, `ui`, `mongodb-exporter`, `blackbox-exporter`, `prometheus`.
+
+
+## Домашнее задание №21 - monitoring-2.
+
+### Основное задание:
+
+ - Основной файл `docker-compose.yml` разбит на два, `docker-compose.yml` для описания приложений и `docker-compose-monitoring.yml` для описания мониторинга.
+ - В мониторинг добавлен `cAdvisor`. Соответственно обновлен файл `prometheus.yml`. Пересобран образ Prometheus.
+ - В мониторинг добавлена `Grafana`. Импортирован источник данных и дашборд `DockerMonitoring`.
+ - Созданы собственные дашборды `UI_Service_Monitoring` и `Business_Logic_Monitoring`
+ - В мониторинг добавлен `Alertmanager` с настроенными уведомлениями в Slack. В Prometheus добавлен конфиг алертов `alerts.yml`. Отредактирован `prometheus.yml`. Соответственно пересобран образ.
+
+ ### Дополнительное задание 1:
+
+ - `Makefile` дополнен билдами и публикациями добавленных образов. Будет обновлятся по мере выполнения дальнейших дополнительных заданий.
+ - Включен экспериментальный режим отдачи метрик Docker. Сбор метрик добавлен в Prometheus. В Grafana добавлен дашборд для этого источника данных. Дашбор выгружен в `monitoring/grafana/dashboards`.
+ - Добавлен сбор метрик с Docker демона и контейнеров через `Telegraf`. Сбор метрик добавлен в Prometheus. В Grafana добавлен дашборд для этого источника данных. Дашбор выгружен в `monitoring/grafana/dashboards`.
+ - Реализован алерт на 95 процентиль времени ответа UI в `prometheus/alerts.yml`.
+ - Настроена интеграция Alertmanager с Gmail.
+
+ ### Дополнительное задание 2:
+
+ - Реализован автоматический провижен источника данных и дашбордов в Grafana.
+ - Реализован сбор метрик с Yandex Monitoring (Stackdriver применим к Google, но мы в Яндексе :> ).
+ Получена информация об утилизации cpu, disk r/w, disk iops, network.
+ - Добавлена новая метрика в код приложения `ui_unique_session_count`, отображает количество уникальных посещений на основе User-Agent.
+
+ ### Дополнительное задание 3:
+
+ - Реализована схема проксирования запросов от Grafana к Prometheus через Trickster.
+ Теперь Prometheus доступен через порт `8480`. Внесены изменения в дата сорс Grafana, она обращается к `http://trickster:8480`. Trickster также добавлен в Prometheus для сбора его метрик.

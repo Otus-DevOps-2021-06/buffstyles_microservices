@@ -1,6 +1,7 @@
 FROM prom/prometheus:v2.1.0
 
-COPY prometheus.yml /etc/prometheus/
+COPY prometheus.yml alerts.yml /etc/prometheus/
+#COPY api.key /etc/prometheus/
 
 WORKDIR /prometheus
 

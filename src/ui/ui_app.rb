@@ -72,6 +72,10 @@ ui_health_gauge = Prometheus::Client::Gauge.new(
   :ui_health,
   'Health status of UI service'
 )
+ui_session_gauge = Prometheus::Client::Gauge.new(
+  :ui_unique_session_count,
+  'Count unique active sessions by User-Agent'
+)
 ui_health_post_gauge = Prometheus::Client::Gauge.new(
   :ui_health_post_availability,
   'Check if Post service is available to UI'
@@ -81,6 +85,7 @@ ui_health_comment_gauge = Prometheus::Client::Gauge.new(
   'Check if Comment service is available to UI'
 )
 prometheus.register(ui_health_gauge)
+prometheus.register(ui_session_gauge)
 prometheus.register(ui_health_post_gauge)
 prometheus.register(ui_health_comment_gauge)
 
@@ -93,10 +98,20 @@ scheduler.every '5s' do
   set_health_gauge(ui_health_comment_gauge, check['dependent_services']['comment'])
 end
 
+all_sessions_id = []
+uniq_session_count = 0
+
 # before each request
 before do
   session[:flashes] = [] if session[:flashes].class != Array
   env['rack.logger'] = settings.mylogger # set custom logger
+  @tracking = session[:tracking]
+  @session = @tracking['HTTP_USER_AGENT']
+  if all_sessions_id.index(@session) == nil
+    all_sessions_id.push(@session)
+    uniq_session_count += 1
+  end
+  set_health_gauge(ui_session_gauge, uniq_session_count)
 end
 
 # after each request

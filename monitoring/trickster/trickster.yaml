@@ -1,0 +1,12 @@
+---
+  frontend:
+    listen_port: 8480
+
+  backends:
+    default:
+      provider: prometheus
+      origin_url: http://prometheus:9090
+      is_default: true
+
+  metrics:
+    listen_port: 8481
