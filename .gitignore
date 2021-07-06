@@ -19,3 +19,7 @@ venv
 /docker-monolith/infra/packer/variables.json
 .env
 api.key
+
+# k8s
+
+join-command.txt
