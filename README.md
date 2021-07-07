@@ -215,6 +215,8 @@ docker run -d --network=reddit --env POST_SERVICE_HOST=postamp --env COMMENT_SER
  - Информация об окружении добавлена в `ui` контейнер.
  - Развернут кластер в Yandex Cloud Managed Service for kubernetes.
  - Приложения задеплоены в `dev` окружение в кластер в Yandex Cloud.
+![picture 1](kubernetes/images/67ae6e71a64a51a358e73f0cbeb2e05ebe77b7ea17a9fa33e7932b5eeeb6a11e.png)
+
 
 ### Дополнительное задание 1:
 
