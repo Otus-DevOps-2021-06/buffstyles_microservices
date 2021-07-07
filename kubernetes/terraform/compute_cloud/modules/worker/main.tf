@@ -9,9 +9,9 @@ terraform {
 resource "yandex_compute_instance" "worker" {
 
   allow_stopping_for_update = true
-  name  = "${var.worker_name}-${count.index + 1}"
-  count = var.worker_number
-  platform_id = var.platform_id
+  name                      = "${var.worker_name}-${count.index + 1}"
+  count                     = var.worker_number
+  platform_id               = var.platform_id
 
   labels = {
     tags = "kube-worker"
@@ -26,8 +26,8 @@ resource "yandex_compute_instance" "worker" {
   boot_disk {
     initialize_params {
       image_id = var.image_id
-      size = 40
-      type = "network-ssd"
+      size     = 40
+      type     = "network-ssd"
     }
   }
 

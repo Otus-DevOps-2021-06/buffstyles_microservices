@@ -9,9 +9,9 @@ terraform {
 resource "yandex_compute_instance" "master" {
 
   allow_stopping_for_update = true
-  name  = "${var.master_name}-${count.index + 1}"
-  count = var.master_number
-  platform_id = var.platform_id
+  name                      = "${var.master_name}-${count.index + 1}"
+  count                     = var.master_number
+  platform_id               = var.platform_id
 
   labels = {
     tags = "kube-master"
@@ -26,8 +26,8 @@ resource "yandex_compute_instance" "master" {
   boot_disk {
     initialize_params {
       image_id = var.image_id
-      size = 40
-      type = "network-ssd"
+      size     = 40
+      type     = "network-ssd"
     }
   }
 

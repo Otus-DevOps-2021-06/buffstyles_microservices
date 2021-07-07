@@ -14,7 +14,7 @@ provider "yandex" {
 }
 
 module "master" {
-  source          = "../modules/master"
+  source          = "./modules/master"
   public_key_path = var.public_key_path
   image_id        = var.image_id
   subnet_id       = var.subnet_id
@@ -24,11 +24,11 @@ module "master" {
 }
 
 module "worker" {
-  source          = "../modules/worker"
+  source          = "./modules/worker"
   public_key_path = var.public_key_path
   image_id        = var.image_id
   subnet_id       = var.subnet_id
   worker_name     = var.worker_name
-  platform_id     = var.platform_id
   worker_number   = var.worker_number
+  platform_id     = var.platform_id
 }

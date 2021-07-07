@@ -222,3 +222,21 @@ docker run -d --network=reddit --env POST_SERVICE_HOST=postamp --env COMMENT_SER
 
  - Kubernetes кластер развернут в Yandex Cloud с помощью Terraform.
  - Манифесты для поднятия Dashboard лежат в каталоге `kubernetes/dashboard`
+
+
+## Домашнее задание №25 - kubernetes-3.
+
+### Основное задание:
+
+ - Настроен LoadBalancer Service.
+ - Настроены правила Ingress для `ui`.
+ - Настроен Ingress Controller.
+ - Сгенерирован TLS сертификат. Сертификат загружен в кластер (объект Secret).
+ - Настроена TLS терминация для `ui-ingress`.
+ - Добавлен Network Policy для `mongo`. Доступ к подам mongo доступен только с подов comment и post.
+ - Добавлен статический Persistent Volume. Создан диск в Yandex Cloud.
+ - Добавлен Persistent Volume Claim для `mongo`
+
+### Дополнительное задание 1:
+
+ - Добавлен манифест объекта Secret `ui-ingress-secret.yml`
