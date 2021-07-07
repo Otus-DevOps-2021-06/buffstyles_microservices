@@ -35,7 +35,7 @@
         state: present
         filename: docker
 
-    - name: Install k8s
+    - name: Install k8s & Docker
       apt:
         name: "{{ item }}"
         state: present
