@@ -1,0 +1,6 @@
+name: post
+version: 1.0.0
+description: OTUS reddit application Post
+maintainers:
+  - name: buffstyles
+appVersion: 1.0
