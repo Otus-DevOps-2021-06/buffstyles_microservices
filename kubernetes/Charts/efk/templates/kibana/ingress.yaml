@@ -1,0 +1,17 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Values.kibana.name }}
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.kibana.ingress.class }}
+spec:
+  rules:
+  - host: {{ .Values.kibana.ingress.host }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Values.kibana.name }}
+          servicePort: {{ .Values.kibana.service.port }}

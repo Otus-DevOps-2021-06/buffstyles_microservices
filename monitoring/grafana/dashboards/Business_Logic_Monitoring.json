@@ -1,34 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "Prometheus",
-      "label": "Prometheus",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "5.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph",
-      "version": "5.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "5.0.0"
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -45,7 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
+  "id": 3,
+  "iteration": 1626087444834,
   "links": [],
   "panels": [
     {
@@ -55,12 +26,14 @@
       "dashes": false,
       "datasource": "Prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 0,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 4,
       "legend": {
         "avg": false,
@@ -75,7 +48,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "8.0.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -85,14 +62,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(comment_count[1h])",
+          "exemplar": true,
+          "expr": "rate(comment_count{kubernetes_namespace=~\"$kubernetes_namespace\"}[1h])",
           "format": "time_series",
+          "interval": "",
           "intervalFactor": 1,
+          "legendFormat": "",
           "refId": "A"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Comments Rate",
       "tooltip": {
@@ -125,7 +106,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -134,12 +119,14 @@
       "dashes": false,
       "datasource": "Prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 12,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 2,
       "legend": {
         "avg": false,
@@ -154,7 +141,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "8.0.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -164,14 +155,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(post_count[1h])",
+          "exemplar": true,
+          "expr": "rate(post_count{kubernetes_namespace=~\"$kubernetes_namespace\"}[1h])",
           "format": "time_series",
+          "interval": "",
           "intervalFactor": 1,
+          "legendFormat": "",
           "refId": "A"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Posts Rate",
       "tooltip": {
@@ -204,18 +199,54 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 16,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": [
+            "default"
+          ],
+          "value": [
+            "default"
+          ]
+        },
+        "datasource": null,
+        "definition": "label_values(kubernetes_namespace)",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "Env",
+        "multi": true,
+        "name": "kubernetes_namespace",
+        "options": [],
+        "query": {
+          "query": "label_values(kubernetes_namespace)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "/.+/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -245,6 +276,6 @@
   },
   "timezone": "",
   "title": "Business_Logic_Monitoring",
-  "uid": "98ZJ9Lznz",
-  "version": 2
+  "uid": "FhCrXom7k",
+  "version": 4
 }

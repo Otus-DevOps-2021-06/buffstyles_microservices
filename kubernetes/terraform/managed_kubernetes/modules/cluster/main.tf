@@ -14,6 +14,8 @@ resource "yandex_kubernetes_cluster" "reddit_cluster" {
   node_service_account_id = var.service_account_id
   release_channel         = "RAPID"
   network_policy_provider = "CALICO"
+  cluster_ipv4_range = "10.1.0.0/16"
+  service_ipv4_range = "10.2.0.0/16"
 
   master {
     version = var.kube_version

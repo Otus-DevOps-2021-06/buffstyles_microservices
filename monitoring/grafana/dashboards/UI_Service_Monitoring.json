@@ -1,34 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "Prometheus",
-      "label": "Prometheus",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "5.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph",
-      "version": "5.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "5.0.0"
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -45,7 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
+  "id": 2,
+  "iteration": 1626087044632,
   "links": [],
   "panels": [
     {
@@ -54,14 +25,17 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
+      "description": "All HTTP requests that UI service receives",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 0,
         "y": 0
       },
-      "id": 6,
+      "hiddenSeries": false,
+      "id": 2,
       "legend": {
         "avg": false,
         "current": false,
@@ -75,7 +49,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "8.0.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -85,16 +63,21 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.95, sum(rate(ui_request_response_time_bucket[5m])) by (le))",
+          "exemplar": true,
+          "expr": "ui_request_count{kubernetes_namespace=~\"$kubernetes_namespace\"}",
           "format": "time_series",
+          "hide": false,
+          "interval": "",
           "intervalFactor": 1,
+          "legendFormat": "",
           "refId": "A"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "HTTP Response Time 95%",
+      "title": "UI HTTP Requests",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -125,7 +108,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -134,12 +121,14 @@
       "dashes": false,
       "datasource": "Prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 12,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 4,
       "legend": {
         "avg": false,
@@ -154,7 +143,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "8.0.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -164,14 +157,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(ui_request_count{http_status=~\"^[45].*\"}[1m])",
+          "exemplar": true,
+          "expr": "rate(ui_request_count{http_status=~\"^[45].*\",kubernetes_namespace=~\"$kubernetes_namespace\"}[1m])",
           "format": "time_series",
+          "interval": "",
           "intervalFactor": 1,
+          "legendFormat": "",
           "refId": "A"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Rate of UI HTTP Requests with Error",
       "tooltip": {
@@ -204,7 +201,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -212,15 +213,16 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
-      "description": "All HTTP requests that UI service receives",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 0,
         "y": 9
       },
-      "id": 2,
+      "hiddenSeries": false,
+      "id": 6,
       "legend": {
         "avg": false,
         "current": false,
@@ -234,7 +236,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "8.0.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -244,23 +250,25 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(ui_request_count[1m])",
+          "exemplar": true,
+          "expr": "histogram_quantile(0.95, sum(rate(ui_request_response_time_bucket{kubernetes_namespace=~\"$kubernetes_namespace\"}[5m])) by (le))",
           "format": "time_series",
-          "hide": false,
+          "interval": "",
           "intervalFactor": 1,
+          "legendFormat": "",
           "refId": "A"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "UI HTTP Requests",
+      "title": "HTTP Response Time 95%",
       "tooltip": {
         "shared": true,
         "sort": 0,
         "value_type": "individual"
       },
-      "transparent": false,
       "type": "graph",
       "xaxis": {
         "buckets": null,
@@ -286,15 +294,51 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
-  "refresh": "10s",
-  "schemaVersion": 16,
+  "refresh": "",
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": [
+            "default"
+          ],
+          "value": [
+            "default"
+          ]
+        },
+        "datasource": null,
+        "definition": "label_values(kubernetes_namespace)",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "Env",
+        "multi": true,
+        "name": "kubernetes_namespace",
+        "options": [],
+        "query": {
+          "query": "label_values(kubernetes_namespace)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "/.+/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
   },
   "time": {
     "from": "now-5m",
@@ -327,6 +371,6 @@
   },
   "timezone": "",
   "title": "UI_Service_Monitoring",
-  "uid": "Uqxayfznz",
-  "version": 2
+  "uid": "ZP8Ouoinz",
+  "version": 8
 }

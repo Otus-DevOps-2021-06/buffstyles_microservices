@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.kibana.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.kibana.name }}
+spec:
+  ports:
+  - port: {{ .Values.kibana.service.port }}
+  selector:
+    app: {{ .Values.kibana.name }}
