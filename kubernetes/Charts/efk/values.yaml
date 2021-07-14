@@ -1,0 +1,46 @@
+---
+kibana:
+  name: kibana
+  replicaCount: 1
+  image:
+    repository: docker.elastic.co/kibana/kibana
+    tag: 7.2.0
+  resources:
+    limits:
+      cpu: 1000m
+    requests:
+      cpu: 100m
+  service:
+    port: 5601
+  ingress:
+    enabled: true
+    class: nginx
+    host: kibana.84.201.166.123.nip.io
+
+elasticsearch:
+  name: elasticsearch
+  image:
+    repository: docker.elastic.co/elasticsearch/elasticsearch
+    tag: 7.2.0
+  service:
+    port: 9200
+  resources:
+    limits:
+      cpu: 1000m
+    requests:
+      cpu: 100m
+    storage: 2Gi
+  storageClassName: yc-network-hdd
+
+fluentd:
+  name: fluentd
+  image:
+    repository: fluent/fluentd-kubernetes-daemonset
+    tag: v1-debian-elasticsearch
+  resources:
+    limits:
+      memory: 500Mi
+    requests:
+      cpu: 100m
+      memory: 200Mi
+  dockerContainersPath: /var/lib/docker/containers

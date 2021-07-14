@@ -18,6 +18,8 @@ ui:
     tag: latest
   service:
     externalPort: 9292
+  ingress:
+    domain: 84.201.166.123.nip.io
 
 mongodb:
   usePassword: false

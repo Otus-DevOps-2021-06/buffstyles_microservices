@@ -20,8 +20,8 @@ resource "yandex_kubernetes_node_group" "reddit_node_group" {
     }
 
     resources {
-      memory = 16
-      cores  = 8
+      memory = 8
+      cores  = 4
     }
 
     boot_disk {
