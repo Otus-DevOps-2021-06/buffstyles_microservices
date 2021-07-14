@@ -202,3 +202,23 @@ docker run -d --network=reddit --env POST_SERVICE_HOST=postamp --env COMMENT_SER
 ### Дополнительное задание 1:
 
  - Установка кластера описана с помощью `Terraform` и `Ansible`.
+
+
+## Домашнее задание №24 - kubernetes-2.
+
+### Основное задание:
+
+ - Установлен `Minikube`.
+ - Созданы деплойменты приложения.
+ - Созданы сервисы для коммуникации подов приложения.
+ - Приложение запущено в `Minikube` в `dev` окружении.
+ - Информация об окружении добавлена в `ui` контейнер.
+ - Развернут кластер в Yandex Cloud Managed Service for kubernetes.
+ - Приложения задеплоены в `dev` окружение в кластер в Yandex Cloud.
+![picture 1](kubernetes/images/67ae6e71a64a51a358e73f0cbeb2e05ebe77b7ea17a9fa33e7932b5eeeb6a11e.png)
+
+
+### Дополнительное задание 1:
+
+ - Kubernetes кластер развернут в Yandex Cloud с помощью Terraform.
+ - Манифесты для поднятия Dashboard лежат в каталоге `kubernetes/dashboard`
