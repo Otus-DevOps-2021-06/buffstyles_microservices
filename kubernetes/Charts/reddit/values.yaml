@@ -1,0 +1,23 @@
+comment:
+  image:
+    repository: buffstyles/comment
+    tag: latest
+  service:
+    externalPort: 9292
+
+post:
+  image:
+    repository: buffstyles/post
+    tag: latest
+  service:
+    externalPort: 5000
+
+ui:
+  image:
+    repository: buffstyles/ui
+    tag: latest
+  service:
+    externalPort: 9292
+
+mongodb:
+  usePassword: false

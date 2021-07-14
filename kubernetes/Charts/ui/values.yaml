@@ -1,0 +1,17 @@
+---
+service:
+  internalPort: 9292
+  externalPort: 9292
+
+image:
+  repository: buffstyles/ui
+  tag: latest
+
+ingress:
+  class: nginx
+  domain: 84.201.166.190.nip.io
+
+postHost:
+postPort:
+commentHost:
+commentPort:
